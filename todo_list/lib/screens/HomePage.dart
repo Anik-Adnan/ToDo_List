@@ -9,50 +9,70 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<String> tasks = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Colors.blue,
-        shape: const ContinuousRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(60),
-            bottomRight: Radius.circular(60),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(38.0),
+        child: AppBar(
+          backgroundColor: Colors.blue,
+          shape: const ContinuousRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(60),
+              bottomRight: Radius.circular(60),
+            ),
           ),
+          title: const Text(
+            "ToDo List",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          centerTitle: true,
         ),
-
-
-        title: const Text("ToDo List",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
-        centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.separated(
+          separatorBuilder: (context,index) => SizedBox(height: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 8.0,horizontal: 8.0), // Add vertical padding around the list
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            return Material(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 2.0,
+              color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
+              child: ListTile(
+
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                title: Text(tasks[index]),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    setState(() {
+                      tasks.removeAt(index);
+                    });
+                  },
+                ),
+              ),
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {
+          _addTask();
+        },
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
+  }
+
+  void _addTask() {
+    setState(() {
+      tasks.add("Task ${tasks.length + 1}");
+    });
   }
 }
