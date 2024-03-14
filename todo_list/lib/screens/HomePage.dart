@@ -31,41 +31,50 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.separated(
-          separatorBuilder: (context,index) => SizedBox(height: 8.0),
-          padding: EdgeInsets.symmetric(vertical: 8.0,horizontal: 8.0), // Add vertical padding around the list
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return Material(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              elevation: 2.0,
-              color: index % 2 == 0 ? Colors.grey[200] : Colors.white,
-              child: ListTile(
-
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                title: Text(tasks[index]),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    setState(() {
-                      tasks.removeAt(index);
-                    });
-                  },
-                ),
-              ),
-            );
-          },
+      body: SingleChildScrollView(
+          child: Container(
+            // color: Colors.blue,
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: tasks.length,
+              separatorBuilder: (context, index) => SizedBox(height: 10.0),
+              itemBuilder: (context, index) {
+                return Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 2.0,
+                  // color: Colors.cyan,
+                  color: index % 2 == 0 ? Colors.cyan.shade700 : Colors.cyan.shade500,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    title: Text(tasks[index]),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Colors.black87,
+                      onPressed: () {
+                        setState(() {
+                          tasks.removeAt(index);
+                        });
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
-      ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
         onPressed: () {
           _addTask();
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
